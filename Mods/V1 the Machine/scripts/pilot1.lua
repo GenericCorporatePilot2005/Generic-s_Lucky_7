@@ -6,9 +6,9 @@ local path = mod_loader.mods[modApi.currentMod].resourcePath
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = require(scriptPath.."replaceRepair/replaceRepair")
-local suppressDialog = require(scriptPath .."suppressDialog")
-local trait = require(mod.scriptPath .."trait")
+local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
+local suppressDialog = require(mod_loader.mods.Nico_pilots.scriptPath .."suppressDialog")
+local trait = require(mod_loader.mods.Nico_pilots.scriptPath .."trait")
 
 local pilotV1 = {
 	Id = "Nico_Pilot_V1",					-- id must be unique. Used to link to art assets.
@@ -135,7 +135,9 @@ function this:init(mod)
 		for i,id in pairs(mechs) do
 			if Board:GetPawn(id):IsAbility("Nico_V1skill") then
 				local V1point = Board:GetPawn(id):GetSpace()
-				ret:AddDamage(SpaceDamage(V1point,-1))
+				local heal = SpaceDamage(V1point,-1)
+				heal.sAnimation="V1Blood"
+				ret:AddDamage(heal)
 				Board:AddEffect(ret)
 			end
 		end
@@ -154,21 +156,6 @@ function this:init(mod)
 			local mechs = extract_table(Board:GetPawns(TEAM_PLAYER))
 			for i,id in pairs(mechs) do
 				if Board:GetPawn(id):IsAbility("Nico_V1skill") then
-					if (pawn:GetTeam() == TEAM_ENEMY) and (pawn:GetTeam() ~= TEAM_BOTS) and not (_G[pawn:GetType()].Minor) then
-						local point = pawn:GetSpace()
-						if point:Manhattan(Board:GetPawnSpace(id)) == 1 then
-							V1Heal:Heal(id,pawn)
-						end
-					end
-				end
-			end
-		end)
-	
-		modapiext:addPawnKilledHook(function(mission, pawn)		
-			local mechs = extract_table(Board:GetPawns(TEAM_PLAYER))
-			for i,id in pairs(mechs) do
-				if Board:GetPawn(id):IsAbility("Nico_V1skill") then
-					local V1point = Board:GetPawn(id):GetSpace()
 					if (pawn:GetTeam() == TEAM_ENEMY) and (pawn:GetTeam() ~= TEAM_BOTS) and not (_G[pawn:GetType()].Minor) then
 						local point = pawn:GetSpace()
 						if point:Manhattan(Board:GetPawnSpace(id)) == 1 then

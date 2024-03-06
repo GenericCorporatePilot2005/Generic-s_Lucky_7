@@ -14,7 +14,7 @@ function mod:init()
 	-- look in template/pilot to see how to code pilots.
 	local pilot = require(self.scriptPath .."pilot")
 	pilot:init(mod)
-	local replaceRepair = require(self.scriptPath.."replaceRepair/replaceRepair")
+	local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
 end
 
 function mod:load(options, version)

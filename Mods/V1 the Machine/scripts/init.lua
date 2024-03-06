@@ -18,7 +18,7 @@ function mod:init()
 	require(self.scriptPath.."suppressDialog")
 	pilotV1:init(mod)
 	pilotV2:init(mod)
-	local replaceRepair = require(self.scriptPath.."replaceRepair/replaceRepair")
+	local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
 end
 
 function mod:load(options, version)

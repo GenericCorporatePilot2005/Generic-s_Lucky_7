@@ -6,7 +6,7 @@ local path = mod_loader.mods[modApi.currentMod].resourcePath
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = require(scriptPath.."replaceRepair/replaceRepair")
+local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
 local suppressDialog = require(scriptPath .."suppressDialog")
 
 local pilotV2 = {

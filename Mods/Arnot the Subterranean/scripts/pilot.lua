@@ -28,7 +28,7 @@ function this:init(mod)
 	local oldGetSkillInfo = GetSkillInfo
 	function GetSkillInfo(skill)
 		if skill == "Nico_Moleskill" then
-			return PilotSkill("Burrower", "Mech burrows underground instead of walking.\nDoesn't work on Flying mechs.")
+			return PilotSkill("Burrower", "Mech burrows underground instead of walking, -1 move. \nDoesn't work on Flying mechs.")
 		end
 		return oldGetSkillInfo(skill)
 	end
@@ -37,17 +37,15 @@ function this:init(mod)
 	function Move:GetTargetArea(p, ...)
 		local mover = Board:GetPawn(p)
 		if mover and (mover:IsAbility("Nico_Moleskill")) then
-			local pathType = PATH_FLYER
-			local old = extract_table(Board:GetReachable(p, mover:GetMoveSpeed(), pathType))
-			local ret = PointList()
-	
-			for _, v in ipairs(old) do
-				local terrain = Board:GetTerrain(v)
-	
-				if terrain ~= TERRAIN_HOLE then
-					if not Board:IsValid(v) or Board:GetTerrain(v) == TERRAIN_HOLE then break end	--can't dig past the board/water/lava/holes
-					if not Board:IsBuilding(v) and Board:GetTerrain(v) ~= TERRAIN_MOUNTAIN then													--can't emerge from mountains/buildings but can go past them
-						if not Board:GetPawn(v) then ret:push_back(v) end													--can only emerge from pawns with the upgrade
+			local ret = Board:GetReachable(point, Pawn:GetMoveSpeed(), Pawn:GetPathProf())
+			local board_size = Board:GetSize()
+			for i = 0, 7 do
+				for j = 0, 7  do
+					local point = Point(i,j) -- DIR_LEFT
+					if Board:IsBuilding(point) then
+						for l = DIR_START, DIR_END do
+							ret:push_back(point + DIR_VECTORS[l])
+						end
 					end
 				end
 			end

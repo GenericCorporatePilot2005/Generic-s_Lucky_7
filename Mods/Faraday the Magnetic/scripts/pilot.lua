@@ -6,7 +6,7 @@ local path = mod_loader.mods[modApi.currentMod].resourcePath
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = require(scriptPath.."replaceRepair/replaceRepair")
+local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
 
 local pilot = {
 	Id = "Nico_Pilot_Magneto",					-- id must be unique. Used to link to art assets.

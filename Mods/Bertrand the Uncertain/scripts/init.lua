@@ -7,15 +7,26 @@ local mod = {
 	version = "0.1",
 	requirements = {},
 	modApiVersion = "2.3.0",
-	description = "Critical Failures = -1 damage, deals 1 damage intead of healing.\nCritical Success = KILL damage, healing restores 10 hp.\nLow Average= +0.\nAverage= +1.\nHigher Average= +2.",
+	description = "For him, humanity IS worth a dice throw.\nSprites made by Deluge!",
 	icon = "img/mod_icon.png"
 }
 
 function mod:init()
 	local pilot = require(self.scriptPath .."pilot")
 	require(self.scriptPath.."personality")
-	require(self.scriptPath.."suppressDialog")
 	pilot:init(mod)
+end
+
+function mod:metadata()--Don't make any changes to resources in metadata. metadata runs regardless of if your mod is enabled or not.
+	modApi:addGenerationOption(
+		"Nico_DIE_Sprite", "Bertrand's Colored Dice",
+		"Changes the color Bertrand's Dice icons.\n(the 4 pips side is still red regardless).\nREQUIRES RESTART TO TAKE EFFECT!",
+		{
+			strings = { "All Red", "Colored"},
+			values = {1, 2},
+			value = 1
+		}
+	)
 end
 
 function mod:load(options, version) end

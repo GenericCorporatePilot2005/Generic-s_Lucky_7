@@ -6,16 +6,16 @@ local path = mod_loader.mods[modApi.currentMod].resourcePath
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = require(scriptPath.."replaceRepair/replaceRepair")
+local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
 
 local pilot = {
 	Id = "Nico_Pilot_Prom",					-- id must be unique. Used to link to art assets.
-	Personality = "Vek",        -- must match the id for a personality you have added to the game.
+	Personality = "NicoPrometheus",         -- must match the id for a personality you have added to the game.
 	Name = "Prometheus",
 	Rarity = 1,
 	PowerCost = 0,
-	Voice = "/voice/ai",				-- audio. look in pilots.lua for more alternatives.
-	Skill = "Nico_Promskill",				-- pilot's ability - Must add a tooltip for new skills.
+	Voice = "/voice/ai",			    	-- audio. look in pilots.lua for more alternatives.
+	Skill = "Nico_Promskill",			 	-- pilot's ability - Must add a tooltip for new skills.
 }
 
 CreatePilot(pilot)
@@ -132,9 +132,9 @@ function this:init(mod)
 			ret:AddScript(string.format("Board:GetPawn(%s):SetActive(true)", p1:GetString()))
 			ret:AddScript(string.format("Board:GetPawn(%s):SetMovementSpent(false)", p1:GetString()))
 			ret:AddScript(string.format("Board:Ping(%s,GL_Color(255,226,52))", p1:GetString())) -- cool animation part 1
-			ret:AddDelay(0.125)
+			ret:AddDelay(0.150)
 			ret:AddScript(string.format("Board:Ping(%s,GL_Color(255,162,52))", p1:GetString())) -- cool animation part 2
-			ret:AddDelay(0.125)
+			ret:AddDelay(0.150)
 			ret:AddScript(string.format("Board:Ping(%s,GL_Color(253,79,66))", p1:GetString())) -- cool animation part 3
 		else
 			local distance = p1:Manhattan(p2)
@@ -143,7 +143,7 @@ function this:init(mod)
 				local damage = SpaceDamage(p1 + DIR_VECTORS[direction]*i,0, direction)
 				damage.iFire = EFFECT_CREATE
 				if i == distance then 	
-					damage.sAnimation = "flamethrower"..distance.."_"..direction 
+					damage.sAnimation = "flamethrower1_"..direction 
 				end
 				ret:AddDamage(damage)
 			end
