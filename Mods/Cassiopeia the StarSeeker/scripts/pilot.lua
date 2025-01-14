@@ -11,11 +11,11 @@ math.random() -- first value is useless
 function this:init(mod)
 	local pilot = {
 		Id = "Pilot_Nico_Geode",	-- id must be unique. Used to link to art assets.
-		Personality = "Vek",        -- must match the id for a personality you have added to the game.
+		Personality = "Rock",        -- must match the id for a personality you have added to the game.
 		Name = "Cassiopeia",
+		Sex = SEX_FEMALE,
 		Rarity = 1,
-		PowerCost = 0,
-		Voice = "/voice/ai",		-- audio. look in pilots.lua for more alternatives.
+		Voice = "/voice/ariadne",	-- audio. look in pilots.lua for more alternatives.
 		Skill = "NicoGeodeskill",	-- pilot's ability - Must add a tooltip for new skills.
 	}
 	
@@ -50,6 +50,7 @@ function this:init(mod)
 	--Geode Hounds
         -- iterate our files and add the assets so the game can find them.
         modApi:appendAsset("img/effects/shotup_Nico_Gemling.png", path .."img/effects/shotup_Nico_Gemling"..color..".png")
+        modApi:appendAsset("img/effects/shotdown_Nico_Gemling.png", path .."img/effects/shotdown_Nico_Gemling"..color..".png")
         modApi:appendAsset("img/effects/explo_Gem.png", path .."img/effects/explo_Gem"..color..".png")
 		modApi:appendAsset("img/portraits/npcs/Pilot_Gemling.png", path.."img/portraits/npcs/Pilot_Gemling"..math.random(1,2)..color..".png")
         modApi:appendAsset("img/units/player/Nico_Gemling.png", path .."img/units/player/Nico_gemling"..color..".png")
@@ -106,7 +107,7 @@ function this:init(mod)
 			return ret
 		end	
 		Nico_Gemling_Push = Skill:new{
-			Name = "Crystal Smash",
+			Name = "Geode Smash",
 			Description = "Damages self, and pushes all units on tiles adjacent to it.",
 			Class = "Unique",
 			Icon = "weapons/Nico_Gemling_Push.png",
@@ -226,7 +227,7 @@ function this:init(mod)
 						if p1 ~= notuser then
 							ret:AddArtillery(p1,deploy2,"effects/shotup_Nico_Gemling.png",NO_DELAY)
 						else
-							ret:AddDropper(deploy2,"effects/shotup_Nico_Gemling.png")
+							ret:AddDropper(deploy2,"effects/shotdown_Nico_Gemling.png")
 						end
 						owner:AddScript("Board:GetPawn("..targets[i]:GetString().."):SetOwner("..k..")")
 						ret:AddDelay(FULL_DELAY)

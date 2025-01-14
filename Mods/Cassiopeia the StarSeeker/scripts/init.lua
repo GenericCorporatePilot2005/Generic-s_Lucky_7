@@ -16,7 +16,7 @@ function mod:metadata()--Don't make any changes to resources in metadata. metada
 		"Nico_Geode_Sprite", "Cassiopeia's Geodes",
 		"Changes the color Cassiopeia's geodes and Geode Hounds.\nREQUIRES RESTART TO TAKE EFFECT!",
 		{
-			strings = { "Purple", "Green","Blue"},
+			strings = { "Purple","Green","Blue"},
 			values = {1, 2, 3},
 			value = 1
 		}
@@ -28,7 +28,7 @@ function mod:init()
 end
 
 function mod:load(options, version)
-	local color = options["Nico_Geode_Sprite"].value
+	local color = mod_loader.currentModContent[mod.id].options["Nico_Geode_Sprite"].value
 	mod.icon = self.resourcePath .."img/icons/mod_icon"..color..".png"
 end
 

@@ -4,11 +4,11 @@
 local mod = {
 	id = "Nico_V1_Pilot",
 	name = "V1 The Machine",
-	version = "2 is here too!",
+	version = "3 isn't canon.",
 	requirements = {},
 	modApiVersion = "2.3.0",
 	icon = "img/mod_icon.png",
-	description = "Portraits made by Hedera.",
+	description = "The Ultimate war machine playing in the side of humanity as a whole for the first time in its existence, PRAY that endless Vek blood will suffice it.\nPortraits made by Hedera.",
 }
 
 function mod:init()

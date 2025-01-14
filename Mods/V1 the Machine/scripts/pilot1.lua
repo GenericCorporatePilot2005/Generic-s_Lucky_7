@@ -31,7 +31,7 @@ function this:init(mod)
 
 	replaceRepair:addSkill{
 		Name = "Blood Lust",
-		Description = "Instead of repairing, does a melee attack that flips the target's attacks and damages, if the target has a queued attack, fully heals self.",
+		Description = "Instead of repairing, does a melee attack that flips and damages, fully heals self when flipping queued attacks.",
 		weapon = "Nico_V1skill",
 		pilotSkill = "Nico_V1skill",
 		Icon = "img/weapons/V1Punchrepair.png",
