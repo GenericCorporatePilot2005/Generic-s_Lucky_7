@@ -6,7 +6,7 @@ local path = mod_loader.mods[modApi.currentMod].resourcePath
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
+local replaceRepair_B = mod_loader.mods.Nico_pilots.replaceRepair_B
 local suppressDialog = require(scriptPath .."suppressDialog")
 
 local pilotV2 = {
@@ -30,7 +30,7 @@ CreatePilot(pilotV2)
 
 function this:init(mod)
 
-	replaceRepair:addSkill{
+	replaceRepair_B:addSkill{
 		Name = "Clair de Lune",
 		Description = "Instead of repairing, punch an adjacent tile, dealing huge damage and pushing tiles adjacent to target.",
 		weapon = "Nico_V2skill",

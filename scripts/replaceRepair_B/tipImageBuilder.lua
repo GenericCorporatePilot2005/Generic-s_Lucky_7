@@ -1,4 +1,3 @@
-
 local path = GetParentPath(...)
 local selected = require(path.."lib/selected")
 local getSelectedPawn = selected.getSelectedPawn
@@ -51,8 +50,11 @@ function tipImageBuilder:setup(skill)
 		Board:DamageSpace(SpaceDamage(pawn:GetSpace(), pawn:GetHealth() - 1))
 	end
 	
+	local enemies = {} -- Store enemy objects to link them to Queued targets
 	local mechId = selected:GetId()
 	local enemy = t.CustomEnemy or "Scorpion2"
+	
+	-- First Pass: Spawn all terrain and pawns
 	for k, loc in pairs(t) do
 		mechId = (mechId + 1) % 3
 		local mech = Game:GetPawn(mechId)
@@ -61,6 +63,11 @@ function tipImageBuilder:setup(skill)
 		
 		if k:sub(1,5) == "Enemy" then
 			AddPawn(loc, enemy, k:sub(-7,-1) == "Damaged")
+			local p = Board:GetPawn(loc)
+			if p then
+				local index = k:match("%d+") or ""
+				enemies[index] = p
+			end
 		elseif k:sub(1,8) == "Friendly" then
 			AddPawn(loc, mech, k:sub(-7,-1) == "Damaged")
 		elseif k:sub(1,8) == "Building" then
@@ -89,6 +96,17 @@ function tipImageBuilder:setup(skill)
 			AddEffect(loc, "iAcid")
 		elseif k:sub(1,5) == "Spawn" then
 			Board:SpawnPawn(enemy, loc)
+		end
+	end
+
+	for k, v in pairs(t) do
+		if type(k) == "string" and k:sub(1, 6) == "Queued" then
+			local index = k:match("%d+") or ""
+			local targetPawn = enemies[index]
+			if targetPawn and type(v) == "userdata" then
+				-- Native engine call to show attack icons/lines
+				targetPawn:SetQueuedTarget(v)
+			end
 		end
 	end
 end

@@ -70,7 +70,7 @@ function this:init(mod)
 			PosX = -10,
 			PosY = 5
 		}
-		Nico_Gemling = DeployUnit_Bomby:new{
+		Nico_Gemling_0 = DeployUnit_Bomby:new{
 			Name = "Geode Hound",
 			Health = 1,
 			MoveSpeed = 3,
@@ -82,6 +82,10 @@ function this:init(mod)
 			ImpactMaterial = IMPACT_METAL,
 			Corpse = false,
 			Portrait = "npcs/Pilot_Gemling",
+		}
+		Nico_Gemling_2 = DeployUnit_Bomby:new{
+			Health = 2,
+			SkillList = { "Nico_Gemling_Clatter", "Nico_Gemling_Push" }
 		}
 		Nico_Gemling_Clatter = Skill:new{
 			Name = "Cluster Clatter",
@@ -179,6 +183,8 @@ function this:init(mod)
 				local pawn = Board:GetPawn(k)
 				local level1 = (k==0 and pilot0.level > 0) or (k==1 and pilot1.level > 0) or (k==2 and pilot2.level > 0)
 				local level2 = (k==0 and pilot0.level > 1) or (k==1 and pilot1.level > 1) or (k==2 and pilot2.level > 1)
+				local count = 0 or level1 and 1 or level2 and 2
+				local myPawn = "Nico_Gemling_"..math.min(0,count)
 				if pawn:IsAbility("NicoGeodeskill") then
 					local p1 = pawn:GetSpace()
 					if p1 == Point( -1, -1 ) then p1 = notuser end
@@ -199,7 +205,7 @@ function this:init(mod)
 					end
 					local deploy = SpaceDamage(targets[i],0)
 					mission.Nico_GeodeDeploySpaces[#mission.Nico_GeodeDeploySpaces + 1] = targets[i]
-					deploy.sPawn = "Nico_Gemling"
+					deploy.sPawn = myPawn
 					worldConstants:setHeight(ret, 50)
 					if p1 ~= notuser then
 						ret:AddBounce(p1,1)
@@ -210,10 +216,6 @@ function this:init(mod)
 					owner:AddScript("Board:GetPawn("..targets[i]:GetString().."):SetOwner("..k..")")
 					ret:AddBounce(deploy.loc,3)
 					if level1 then
-						if level2 then
-							Nico_Gemling.Health = 2
-							Nico_Gemling.SkillList = { "Nico_Gemling_Clatter", "Nico_Gemling_Push" }
-						end
 						seen = {}
 						avoid_water = true
 						while (Board:IsBlocked(targets[i], PATH_PROJECTILE) or Board:IsTerrain(targets[i],TERRAIN_LAVA) or (Board:IsTerrain(targets[i],TERRAIN_WATER) and avoid_water) or Board:IsTerrain(targets[i],TERRAIN_HOLE) or Board:IsPawnSpace(targets[i]) or list_contains(mission.Nico_GeodeDeploySpaces,targets[i]) or list_contains(death,targets[i]) or Board:IsEdge(targets[i]) or Board:IsDangerousItem(targets[i])) do
@@ -223,7 +225,7 @@ function this:init(mod)
 						end
 						local deploy2 = SpaceDamage(targets[i],0)
 						mission.Nico_GeodeDeploySpaces[#mission.Nico_GeodeDeploySpaces + 1] = targets[i]
-						deploy2.sPawn = "Nico_Gemling"
+						deploy2.sPawn = myPawn
 						if p1 ~= notuser then
 							ret:AddArtillery(p1,deploy2,"effects/shotup_Nico_Gemling.png",NO_DELAY)
 						else

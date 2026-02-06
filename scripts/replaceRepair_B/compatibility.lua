@@ -2,27 +2,27 @@
 local nullfunction = function() end
 local compatibility = {}
 
-compatibility.SetRepairSkill = ReplaceRepair.addSkill
-compatibility.SetPilotRepairSkill = ReplaceRepair.addSkill
-compatibility.SetMechRepairSkill = ReplaceRepair.addSkill
-compatibility.GetCurrentSkill = function() return ReplaceRepair:getCurrentSkill() end
-compatibility.GetVersion = ReplaceRepair.getVersion
-compatibility.GetHighestVersion = ReplaceRepair.getVersion
-compatibility.mostRecent = ReplaceRepair
+compatibility.SetRepairSkill = ReplaceRepair_B.addSkill
+compatibility.SetPilotRepairSkill = ReplaceRepair_B.addSkill
+compatibility.SetMechRepairSkill = ReplaceRepair_B.addSkill
+compatibility.GetCurrentSkill = function() return ReplaceRepair_B:getCurrentSkill() end
+compatibility.GetVersion = ReplaceRepair_B.getVersion
+compatibility.GetHighestVersion = ReplaceRepair_B.getVersion
+compatibility.mostRecent = ReplaceRepair_B
 compatibility.init = nullfunction
 compatibility.load = nullfunction
 compatibility.internal_init = nullfunction
 
 if lmn_replaceRepair then
-	if lmn_replaceRepair.swaps ~= ReplaceRepair.queued then
+	if lmn_replaceRepair.swaps ~= ReplaceRepair_B.queued then
 		for _, entry in ipairs(lmn_replaceRepair.swaps) do
-			table.insert(ReplaceRepair.queued, entry)
+			table.insert(ReplaceRepair_B.queued, entry)
 		end
 	end
 end
 
 lmn_replaceRepair = {}
-lmn_replaceRepair.swaps = ReplaceRepair.queued
+lmn_replaceRepair.swaps = ReplaceRepair_B.queued
 
 if replaceRepair_internal == nil then
 	replaceRepair_internal = {}
@@ -36,9 +36,9 @@ if replaceRepair_internal == nil then
 	replaceRepair_internal.OrigDescription = Weapon_Texts.Skill_Repair_Description
 end
 
-setmetatable(ReplaceRepair, { __index = compatibility })
-setmetatable(lmn_replaceRepair, { __index = ReplaceRepair })
-setmetatable(replaceRepair_internal, { __index = ReplaceRepair })
+setmetatable(ReplaceRepair_B, { __index = compatibility })
+setmetatable(lmn_replaceRepair, { __index = ReplaceRepair_B })
+setmetatable(replaceRepair_internal, { __index = ReplaceRepair_B })
 
 function compatibility:ForPilot(sPilotSkill, sWeapon, sPilotTooltip, sIcon)
 	Assert.ModInitializingOrLoading()

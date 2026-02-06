@@ -10,7 +10,7 @@ local function init(self)
 
 	--Scripts
 	local pilot = require(self.scriptPath .."pilot")
-	local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
+	local replaceRepair_B = mod_loader.mods.Nico_pilots.replaceRepair_B
 	require(self.scriptPath.."personality")
     pilot:init(self)
 	--require(self.scriptPath.."hooks")

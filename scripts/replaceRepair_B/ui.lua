@@ -138,7 +138,7 @@ local function createUi(screen, uiRoot)
 		local xOffset
 		local drawnVanillaIcon
 		local customRepairIcon
-		local skill = ReplaceRepair:getCurrentSkill()
+		local skill = ReplaceRepair_B:getCurrentSkill()
 		local pawn = getSelectedOrHighlightedPawn()
 
 		if pawn == nil or skill == nil then

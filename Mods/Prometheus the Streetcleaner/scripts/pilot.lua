@@ -6,7 +6,7 @@ local path = mod_loader.mods[modApi.currentMod].resourcePath
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
+local replaceRepair_B = mod_loader.mods.Nico_pilots.replaceRepair_B
 
 local pilot = {
 	Id = "Nico_Pilot_Prom",					-- id must be unique. Used to link to art assets.
@@ -27,7 +27,7 @@ CreatePilot(pilot)
 
 function this:init(mod)
 
-	replaceRepair:addSkill{
+	replaceRepair_B:addSkill{
 		Name = "Flame Thrower",
 		Description = "Instead of repairing, uses flamethrower, if Mech's on fire, fires projectile. Removes fire from self.",
 		weapon = "Nico_Promskill",

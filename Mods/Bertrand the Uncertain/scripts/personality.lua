@@ -1,7 +1,7 @@
 -- Adds a personality without the use of a csv file.
 
 -- Unique identifier for personality.
-local personality = "NicoMachine"
+local personality = "NicoRNG"
 --squad's name: #squad
 --pilot's name: #self_reverse
 --#main_reverse
@@ -9,32 +9,28 @@ local personality = "NicoMachine"
 -- Table of responses to various triggers.
 local tbl = {
 		--Game States
-		Gamestart = {"EARTH /// FIRST\nSKY HIGH","EARTH /// FIRST\nWALKING ON THE MOON","EARTH /// FIRST\nUNDER THE STARS","EARTH /// FIRST\nVARIATIONS ON A CLOUD","EARTH /// FIRST\nWHAT A WONDERFUL WORLD"},
+		Gamestart = {""},
 		FTL_Found = {""},
 		FTL_Start = {""},
-		Gamestart_PostVictory = {"EARTH /// FIRST\n(NOT SO)ORDINARY WORLD","EARTH /// FIRST\nSAME OLD STORY","EARTH /// FIRST\nNO SURPRISES"},
-		Death_Revived = {"+ BACK IN BLACK"},
-		Death_Main = {"<HA HA HA HA>"},
+		Gamestart_PostVictory = {""},
+		Death_Revived = {""},
+		Death_Main = {""},
 		Death_Response = {""},
 		Death_Response_AI = {""},
-		TimeTravel_Win = {"E-"..math.random(3,5)..":VEK'S INFERNO-- STANDARD --\nTIME: "..math.random(100)..":"..math.random(59).."."..math.random(99).."| S\nKILLS: "..math.random(10000).."| S\nSTYLE: "..math.random(1000000).."| S"},
-		Gameover_Start = {"<HA HA HA HA>"},
-		Gameover_Response = {"<HA HA HA HA>"},
+		TimeTravel_Win = {""},
+		Gameover_Start = {""},
+		Gameover_Response = {""},
 
 	-- UI Barks
-		Upgrade_PowerWeapon = {"<WEAPONRY UPGRADED>"},
-		Upgrade_NoWeapon = {"<CAN'T ATTACK IF I HAVE NO WEAPONS EQUIPPED, DUMBASS>"},
-		Upgrade_PowerGeneric = {"<UPGRADE EQUIPPED>"},
+		Upgrade_PowerWeapon = {""},
+		Upgrade_NoWeapon = {""},
+		Upgrade_PowerGeneric = {""},
 
 	-- Mid-Battle
 		MissionStart = {""},
-		Mission_ResetTurn = {"+ FLASHBACK"},
+		Mission_ResetTurn = {""},
 		MissionEnd_Dead = {""},
 		MissionEnd_Retreat = {""},
-		Mission_Nico_NAT20 = {"fantastic"},
-		Mission_Nico_NAT1 = {"better luck next time"},
-		
-
 
 		MissionFinal_Start = {"EARTH/// LAST ACT CLIMAX\nTO HELL AND BACK","EARTH/// LAST ACT CLIMAX\nLOVERS ON THE SUN"},
 		MissionFinal_StartResponse = {"LIGHT UP THE NIGHT"},

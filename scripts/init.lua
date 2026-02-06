@@ -7,7 +7,7 @@ local mod = {
 }
 
 function mod:init()
-	self.replaceRepair = require(self.scriptPath.."replaceRepair/replaceRepair")
+	self.replaceRepair_B = require(self.scriptPath.."replaceRepair_B/replaceRepair_B")
 	self.trait = require(self.scriptPath.."trait")
 end
 

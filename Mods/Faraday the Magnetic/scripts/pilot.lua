@@ -6,12 +6,12 @@ local path = mod_loader.mods[modApi.currentMod].resourcePath
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
+local replaceRepair_B = mod_loader.mods.Nico_pilots.replaceRepair_B
 
 local pilot = {
 	Id = "Nico_Pilot_Magneto",					-- id must be unique. Used to link to art assets.
 	Personality = "Vek",        -- must match the id for a personality you have added to the game.
-	Name = "Shin Leva",
+	Name = "Faraday",
 	PowerCost = 1,
 	Rarity = 2,
 	Voice = "/voice/ai",				-- audio. look in pilots.lua for more alternatives.
@@ -115,9 +115,9 @@ function this:init(mod)
 		Board:AddEffect(effect)
 		tippolarity = true
 	end
-	replaceRepair:addSkill{
+	replaceRepair_B:addSkill{
 		Name = "Magneto",
-		Description = "Repairing mangnetizes all adjacent units. Already magnetized allies will get healed, already magnetized enemies will suffer 1 damage and get flipped.",
+		Description = "Repairing Mangnetizes adjacent units. If magnetized, allies get healed, magnetized enemies will suffer 1 damage and be flipped.",
 		weapon = "Nico_Magneto_Skill",
 		pilotSkill = "Nico_Magneto_Skill",
 		Icon = "img/weapons/MagnetoRepair.png",
@@ -129,7 +129,7 @@ function this:init(mod)
 	Nico_Magneto_Skill = Skill_Repair:new{
 		Icon = "img/weapons/MagnetoRepair.png",
 		Name = "Magnetic repairs",
-		Description = "Repairing mangnetizes all adjacent units.\nAlready magnetized allies will get healed, already magnetized enemies will suffer 1 damage and get flipped.",
+		Description = "Repairing Mangnetizes adjacent units. If magnetized, allies get healed, magnetized enemies will suffer 1 damage and be flipped.",
 		Amount = -1,
 		Flip = true,
 		TipImage = {
@@ -167,6 +167,9 @@ function this:init(mod)
 	function Nico_Magneto_Skill:GetSkillEffect(p1,p2)
 		local ret = SkillEffect()
 		local damage = SpaceDamage(p1,self.Amount)
+		if IsMagnetic(p1) then
+			damage.iDamage = self.Amount - 1
+		end
 		damage.iFire = EFFECT_REMOVE
 		damage.iAcid = EFFECT_REMOVE
 		local magthis = false
@@ -178,7 +181,7 @@ function this:init(mod)
 			local curr = p1 + DIR_VECTORS[dir]
 			if Board:IsPawnSpace(curr) and not IsMagnetic(curr) then
 				if not IsTipImage() then
-					local damage = SpaceDamage(curr, self.Damage)
+					local damage = SpaceDamage(curr)
 					damage.sImageMark = "combat/icons/icon_magnet_glow.png"
 					damage.sAnimation = "tosx_magflare"
 					ret:AddDamage(damage)
@@ -188,16 +191,11 @@ function this:init(mod)
 					ret:AddScript("GAME.tosx_PosPolarities["..magthis.."] = "..turn) -- Add to magnetic list
 				else
 					if Board:GetPawnTeam(curr) == TEAM_PLAYER then
-						local heal = SpaceDamage(curr,-1)
+						local heal = SpaceDamage(curr,self.Amount)
 						ret:AddDamage(heal)
 						ret:AddBounce(curr,1)
 					elseif Board:GetPawnTeam(curr) == TEAM_ENEMY then
 						local damage = SpaceDamage(curr,1,DIR_FLIP)
-						damage.sAnimation = "tosx_magflare"
-						ret:AddDamage(damage)
-						ret:AddBounce(curr,1)
-					else
-						local damage = SpaceDamage(curr,0,DIR_FLIP)
 						damage.sAnimation = "tosx_magflare"
 						ret:AddDamage(damage)
 						ret:AddBounce(curr,1)
@@ -218,21 +216,23 @@ function this:init(mod)
 				end
 				
 				if Board:IsPawnSpace(point) and point ~= p1 then
-					if IsMagnetic(point) and Board:GetPawnTeam(point) == TEAM_PLAYER then
-						local heal = SpaceDamage(point,-1)
-						ret:AddDamage(heal)
-						ret:AddBounce(point,1)
-					elseif IsMagnetic(point) and Board:GetPawnTeam(point) == TEAM_ENEMY then
-						local damage = SpaceDamage(point,1,DIR_FLIP)
-						damage.sAnimation = "tosx_magflare"
-						damage.sImageMark = "combat/icons/icon_swap_magnet_glowA.png"
-						ret:AddDamage(damage)
-						ret:AddBounce(point,1)
-					else
-						local damage = SpaceDamage(point,0,DIR_FLIP)
-						damage.sAnimation = "tosx_magflare"
-						ret:AddDamage(damage)
-						ret:AddBounce(curr,1)
+					if IsMagnetic(point) then
+						if Board:GetPawnTeam(point) == TEAM_PLAYER then
+							local heal = SpaceDamage(point,-1)
+							ret:AddDamage(heal)
+							ret:AddBounce(point,1)
+						elseif Board:GetPawnTeam(point) == TEAM_ENEMY then
+							local damage = SpaceDamage(point,1,DIR_FLIP)
+							damage.sAnimation = "tosx_magflare"
+							damage.sImageMark = "combat/icons/icon_swap_magnet_glowA.png"
+							ret:AddDamage(damage)
+							ret:AddBounce(point,1)
+						else
+							local damage = SpaceDamage(point,0,DIR_FLIP)
+							damage.sAnimation = "tosx_magflare"
+							ret:AddDamage(damage)
+							ret:AddBounce(point,1)
+						end
 					end
 				end
 			end

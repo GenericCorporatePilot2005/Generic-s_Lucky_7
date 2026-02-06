@@ -9,16 +9,16 @@ local selected = require(path.."lib/selected")
 local getSelectedPawn = selected.getSelectedPawn
 
 local function onModsInitialized()
-	if VERSION < ReplaceRepair.version then
+	if VERSION < ReplaceRepair_B.version then
 		return
 	end
 
-	if ReplaceRepair.initialized then
+	if ReplaceRepair_B.initialized then
 		return
 	end
 
-	ReplaceRepair:finalizeInit()
-	ReplaceRepair.initialized = true
+	ReplaceRepair_B:finalizeInit()
+	ReplaceRepair_B.initialized = true
 end
 
 local function isPilotSkill(self, pawn)
@@ -127,16 +127,16 @@ end
 
 modApi:addModsInitializedHook(onModsInitialized)
 
-if ReplaceRepair == nil or not modApi:isVersion(VERSION, ReplaceRepair.version) then
-	ReplaceRepair = ReplaceRepair or {}
-	ReplaceRepair.version = VERSION
-	ReplaceRepair.queued = ReplaceRepair.queued or {}
+if ReplaceRepair_B == nil or not modApi:isVersion(VERSION, ReplaceRepair_B.version) then
+	ReplaceRepair_B = ReplaceRepair_B or {}
+	ReplaceRepair_B.version = VERSION
+	ReplaceRepair_B.queued = ReplaceRepair_B.queued or {}
 
-	function ReplaceRepair:getVersion()
+	function ReplaceRepair_B:getVersion()
 		return self.version
 	end
 
-	function ReplaceRepair:addSkill(repairSkill)
+	function ReplaceRepair_B:addSkill(repairSkill)
 		Assert.ModInitializingOrLoading()
 		Assert.Equals('table', type(repairSkill), "Argument #1")
 
@@ -145,7 +145,7 @@ if ReplaceRepair == nil or not modApi:isVersion(VERSION, ReplaceRepair.version) 
 		table.insert(self.queued, repairSkill)
 	end
 
-	function ReplaceRepair:finalizeInit()
+	function ReplaceRepair_B:finalizeInit()
 		self.addSkill = addSkill
 		self.getCurrentSkill = getCurrentSkill
 
@@ -171,4 +171,4 @@ if ReplaceRepair == nil or not modApi:isVersion(VERSION, ReplaceRepair.version) 
 	require(path.."compatibility")
 end
 
-return ReplaceRepair
+return ReplaceRepair_B

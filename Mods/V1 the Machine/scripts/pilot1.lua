@@ -6,7 +6,7 @@ local path = mod_loader.mods[modApi.currentMod].resourcePath
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
+local replaceRepair_B = mod_loader.mods.Nico_pilots.replaceRepair_B
 local suppressDialog = require(mod_loader.mods.Nico_pilots.scriptPath .."suppressDialog")
 local trait = require(mod_loader.mods.Nico_pilots.scriptPath .."trait")
 
@@ -29,7 +29,7 @@ CreatePilot(pilotV1)
 
 function this:init(mod)
 
-	replaceRepair:addSkill{
+	replaceRepair_B:addSkill{
 		Name = "Blood Lust",
 		Description = "Instead of repairing, does a melee attack that flips and damages, fully heals self when flipping queued attacks.",
 		weapon = "Nico_V1skill",
@@ -50,9 +50,9 @@ function this:init(mod)
 		Damage=1,
 		TipImage = { --You'll have to create a custom tip image if you want the enemy to fire
 			Unit = Point(1,2),
-			Enemy = Point(1,1),
+			Enemy1 = Point(1,1),
 			Target = Point(1,1),
-			Queued = Point(3,1),
+			Queued1 = Point(3,1),
 			Friendly = Point(3,1),
 			CustomEnemy = "Firefly2",
 			Length = 4,

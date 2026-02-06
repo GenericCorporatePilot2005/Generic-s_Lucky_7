@@ -3,7 +3,7 @@ local this={}
 -- read out other files and add what they return to variables.
 local mod = modApi:getCurrentMod()
 local scriptPath = modApi:getCurrentMod().scriptPath
-local replaceRepair = mod_loader.mods.Nico_pilots.replaceRepair
+local replaceRepair_B = mod_loader.mods.Nico_pilots.replaceRepair_B
 local path = mod_loader.mods[modApi.currentMod].resourcePath
 local taunt = require(scriptPath.."taunt/taunt")
 
@@ -58,9 +58,9 @@ Nico_HpDrained = Emitter:new{
 --weapon
 function this:init(mod)
 
-	replaceRepair:addSkill{
+	replaceRepair_B:addSkill{
 		Name = "Tauntful",
-		Description = "Instead of repairing, fires a projectile and taunts target. Shields self if it taunts.\nStarts missions with 1 HP.",
+		Description = "Instead of repairing, taunts target with a projectile. Shields self if it taunts.\nStarts missions at 1 HP.",
 		weapon = "Nico_Tauntskill",
 		pilotSkill = "Nico_Tauntskill",
 		Icon = "img/weapons/Nico_Tauntskill.png",
@@ -84,8 +84,14 @@ function this:init(mod)
 		Push = 0,
 		LaunchSound = "/weapons/modified_cannons",
 		ImpactSound = "/impact/generic/explosion",
-		TipImage = StandardTips.Ranged,
 		ZoneTargeting = ZONE_DIR,
+		TipImage = {
+			Unit = Point(2,3),
+			Enemy1 = Point(2,1),
+			Target = Point(2,1),
+			Queued1 = Point(1,1),
+			CustomEnemy = "Firefly1",
+		},
 	}
 
 	function Nico_Tauntskill:GetSkillEffect(p1, p2)

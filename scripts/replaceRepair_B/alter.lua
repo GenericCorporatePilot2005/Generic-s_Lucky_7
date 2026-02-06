@@ -1,4 +1,3 @@
-
 local path = GetParentPath(...)
 local selected = require(path.."lib/selected")
 local tipImageBuilder = require(path.."tipImageBuilder")
@@ -26,6 +25,10 @@ local fields = {
 	"Fire",
 	"Shield",
 	"TargetArea",
+	"Queued",           -- ADDED
+	"Queued1",          -- ADDED
+	"Queued2",          -- ADDED
+	"Queued3",          -- ADDED
 	"SkillEffect"
 	--"TipImage"		-- GetTipImage is called once, so overriding is useless.
 }
@@ -95,7 +98,6 @@ local function getField(skill, field, ...)
 	
 	-- check Weapon_Texts for data and return
 	-- those names and description if available.
-	-- (could be done cleaner with gsub?)
 	if list_contains(weaponTexts, field) then
 		if
 			skill:sub(-2,-1) == "_A" or 
@@ -124,8 +126,15 @@ local function OverrideGetFuncs(field)
 	Skill_Repair["Get".. field] = function(self, ...)
 		local pawn = Board:IsTipImage() and getSelectedPawn() or Pawn
 		if pawn then
-			for _, repairSkill in ipairs(ReplaceRepair.repairSkills) do
+			for _, repairSkill in ipairs(ReplaceRepair_B.repairSkills) do
 				if repairSkill:isActive(pawn) then
+					-- DATA SYNC: Physically copy Queued points to the Repair object
+					-- This allows tipImageBuilder to see them
+					if Board:IsTipImage() and _G[repairSkill.weapon].TipImage then
+						for k, v in pairs(_G[repairSkill.weapon].TipImage) do
+							self.TipImage[k] = v
+						end
+					end
 					return getField(repairSkill.weapon, field, ...)
 				end
 			end
@@ -139,7 +148,7 @@ local function overrideGetSkillInfo()
 	local vanillaGetSkillInfo = GetSkillInfo
 
 	function GetSkillInfo(skill)
-		local repairSkill = ReplaceRepair:getCurrentSkill()
+		local repairSkill = ReplaceRepair_B:getCurrentSkill()
 
 		if repairSkill and repairSkill.pilotSkill then
 			return PilotSkill(
@@ -147,7 +156,7 @@ local function overrideGetSkillInfo()
 				repairSkill.description or "RR_NoDescFound"
 			)
 		else
-			for _, repairSkill in ipairs(ReplaceRepair.repairSkills) do
+			for _, repairSkill in ipairs(ReplaceRepair_B.repairSkills) do
 				if skill == repairSkill.pilotSkill then
 					return PilotSkill(
 						repairSkill.name or "RR_NoNameFound",
@@ -186,7 +195,7 @@ local function overrideGetText()
 		local result = vanillaGetText(id, ...)
 
 		if id:match("^Skill_Repair") then
-			local repairSkill = ReplaceRepair:getCurrentSkill()
+			local repairSkill = ReplaceRepair_B:getCurrentSkill()
 
 			if repairSkill then
 				if id:match("Name$") then
